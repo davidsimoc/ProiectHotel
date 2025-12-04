@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezervare Reușită</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; background-color: #e6ffed; color: #218838; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-block; }
+        h1 { color: #28a745; font-size: 2.5em; }
+        a { color: #007bff; text-decoration: none; font-weight: bold; margin-top: 20px; display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✅ Rezervare Înregistrată cu Succes!</h1>
+    <p>Rezervarea dumneavoastră a fost procesată și salvată în sistem.</p>
+    <p>Vă rugăm să continuați cu plata avansului de 10% (dacă nu a fost deja efectuată).</p>
+
+    <a th:href="@{/}">Înapoi la Dashboard</a>
+</div>
+</body>
+</html>

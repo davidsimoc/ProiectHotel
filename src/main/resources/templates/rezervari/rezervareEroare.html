@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eroare Rezervare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #ffe6e6; /* Rosu pal */
+            color: #cc0000; /* Rosu */
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: inline-block;
+            max-width: 600px;
+        }
+        h1 {
+            color: #cc0000;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p.motiv {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            border: 1px solid #ffcccc;
+            padding: 15px;
+            background-color: #fff0f0;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 30px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>❌ Eroare la Procesarea Rezervării</h1>
+
+    <p>Rezervarea nu a putut fi salvată din următoarele motive:</p>

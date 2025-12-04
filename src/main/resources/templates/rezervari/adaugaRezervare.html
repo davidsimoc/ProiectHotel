@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adaugă Rezervare</title>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+<body>
+
+    <h1>🛎️ Adaugă o nouă Rezervare</h1>
+
+    <form th:action="@{/rezervari/salveaza}" method="post">
+        <h2>Date Client (Din Buletin)</h2>
+        <div class="form-group">
+            <label for="nume">Nume:</label>
+            <input type="text" id="nume" name="nume" th:field="${client.nume}" required/>
+        </div>
+        <div class="form-group">
+            <label for="prenume">Prenume:</label>
+            <input type="text" id="prenume" name="prenume" th:field="${client.prenume}" required/>
+        </div>
+        <div class="form-group">
+            <label for="cnp">CNP:</label>
+            <input type="text" id="cnp" name="cnp" th:field="${client.cnp}" maxlength="13" required/>
+        </div>
+        <div class="form-group">
+            <label for="serieBuletin">Serie Buletin (Seria și Nr.):</label>
+            <input type="text" id="serieBuletin" name="serieBuletin" th:field="${client.serieBuletin}" maxlength="10" required/>
+        </div>
+        <div class="form-group">
+            <label for="adresa">Adresă:</label>
+            <input type="text" id="adresa" name="adresa" th:field="${client.adresa}"/>
+        </div>
+
+        <hr>
+
+        <h2>1. Selectează Perioada</h2>
+        <div class="form-group">
+            <label for="dataCheckin">Data Check-in:</label>
+            <input type="date" id="dataCheckin" th:field="${rezervare.dataCheckin}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="dataCheckout">Data Check-out:</label>
+            <input type="date" id="dataCheckout" th:field="${rezervare.dataCheckout}" required/>
+        </div>
+
+        <hr>
+
+        <h2>2. Alege Camera și Finalizează</h2>
+        <div id="selectieCameraContainer" style="display: none;">
+
+            <div class="form-group">
+                <label for="cameraSelect">Camera Solicitată:</label>
+                <select id="cameraSelect" name="cameraId" required>
+                    <option value="">-- Se încarcă... --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nrPersoane">Număr Persoane:</label>
+                <input type="number" id="nrPersoane" th:field="${rezervare.nrPersoane}" min="1" required/>
+            </div>
+
+            <button type="submit">Calculează & Salvează Rezervarea</button>
+
+        </div>
+    </form>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkinInput = document.getElementById('dataCheckin');
+            const checkoutInput = document.getElementById('dataCheckout');
+            const selectieContainer = document.getElementById('selectieCameraContainer');
+            const cameraSelect = document.getElementById('cameraSelect');
+
+            const today = new Date().toISOString().split('T')[0];
+            checkinInput.min = today;
+
+            function hideSelection() {
+                selectieContainer.style.display = 'none';
+                cameraSelect.innerHTML = '<option value="">-- Se încarcă... --</option>';
+            }
+
+            // Functia pentru validarea Check-out > Check-in (ramane neschimbata)
+            function updateCheckoutMinDate() {
+                const checkinDate = checkinInput.value;
+                if (checkinDate) {
+                    checkoutInput.min = checkinDate;
+                    if (checkoutInput.value && checkoutInput.value < checkinDate) {
+                        checkoutInput.value = checkinDate;
+                    }
+                }
+            }
+            updateCheckoutMinDate();
+
+
+            function fetchAvailableRooms() {
+                const checkIn = checkinInput.value;
+                const checkOut = checkoutInput.value;
+
+                if (!checkIn || !checkOut || checkIn >= checkOut) {
+                    hideSelection(); // Ascunde dacă datele nu sunt complete/valide
+                    return;
+                }
+
+                const apiUrl = `/camere/disponibile?checkIn=${checkIn}&checkOut=${checkOut}`;
+                cameraSelect.innerHTML = '<option value="">-- Se procesează... --</option>';
+
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                             throw new Error(`Eroare HTTP: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(camere => {
+                        cameraSelect.innerHTML = '';
+                        if (camere.length === 0) {
+                            cameraSelect.innerHTML = '<option value="">-- Nicio cameră disponibilă --</option>';
+                            selectieContainer.style.display = 'none';
+                        } else {
+                            camere.forEach(cam => {
+                                const option = document.createElement('option');
+                                option.value = cam.cameraId;
+                                option.textContent = `Nr: ${cam.numarCamera} - Tip: ${cam.tipCamera.numeTip} (${cam.nrPaturi} paturi)`;
+                                cameraSelect.appendChild(option);
+                            });
+                            selectieContainer.style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Eroare la obținerea datelor:', error);
+                        alert("Eroare la comunicarea cu serverul.");
+                        hideSelection();
+                    });
+            }
+
+            checkinInput.addEventListener('change', function() {
+                updateCheckoutMinDate();
+                fetchAvailableRooms();
+            });
+
+            checkoutInput.addEventListener('change', fetchAvailableRooms);
+        });
+    </script>
+
+</body>
+</html>

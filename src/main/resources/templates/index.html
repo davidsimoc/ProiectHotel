@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Management System | Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
+        .header { background-color: #007bff; color: white; padding: 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 2.5em; }
+        .container { width: 80%; margin: 40px auto; display: flex; flex-wrap: wrap; justify-content: space-around; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 15px; width: 300px; padding: 20px; text-align: center; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card h2 { color: #007bff; margin-top: 0; }
+        .card p { color: #666; }
+        .card a { display: inline-block; background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px; font-weight: bold; }
+        .card a:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Hotel Management System️</h1>
+    <p>Bun venit! Panou de administrare principal</p>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Camere și Cazare</h2>
+        <p>Vizualizați statusul curent al camerelor, capacitatea și rezervările active.</p>
+        <a th:href="@{/camere}">Vezi Lista Camere</a>
+    </div>
+
+    <div class="card">
+        <h2>Rezervări și Clienți</h2>
+        <p>Adaugă o nouă rezervare, procesează check-in/out și gestionează datele clienților.</p>
+        <a th:href="@{/rezervari/adauga}">Gestionează Rezervări</a>
+    </div>
+
+    <div class="card">
+        <h2>Finanțe și Rapoarte</h2>
+        <p>Analiza încasărilor, cheltuielilor lunare și gestionarea planului tarifar.</p>
+        <a th:href="@{/finante/rapoarte}">Rapoarte Financiare</a>
+    </div>
+
+    <div class="card">
+        <h2>Aprovizionare și Inventar</h2>
+        <p>Listează mijloacele fixe, dotările și necesarul zilnic de consumabile.</p>
+        <a th:href="@{/inventar}">Vezi Inventar</a>
+    </div>
+
+</div>
+
+</body>
+</html>
