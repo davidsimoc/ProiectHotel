@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Status Cazare & Rapoarte</title>
     <link rel="stylesheet" th:href="@{/css/form.css}">
+    <script th:src="@{/js/raportRezervari.js}"></script>
     <style>
         body { padding-top: 20px; padding-bottom: 50px; background-color: #f4f7f6; }
         h1 { color: #007bff; text-align: center; margin-bottom: 30px; font-size: 2.5em; border-bottom: 3px solid #007bff; padding-bottom: 10px; }
@@ -38,7 +39,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>xPanou de Vizualizare Cazare</h1>
+    <h1>Panou de Vizualizare Cazare</h1>
 
     <div class="report-section">
         <h2>1. Camere Ocupate Astăzi (Status Curent)</h2>
@@ -68,62 +69,40 @@
     <div class="report-section">
         <h2>2. Situația Rezervărilor pe Lună (Raport)</h2>
 
-        <form th:action="@{/camere/raport_lunar}" method="get" class="search-form">
+        <form id="raportLunarForm" class="search-form" onsubmit="return false;">
             <label for="luna">Selectează Luna:</label>
             <select id="luna" name="luna">
                 <option th:each="entry : ${numeLuniMap}"
                         th:value="${entry.key}"
                         th:text="${entry.value}"
-                        th:selected="${entry.key == lunaCurenta}">
-                    Ianuarie
+                        th:selected="${entry.key == lunaCurenta}">Ianuarie
                 </option>
             </select>
 
             <label for="an">An:</label>
             <input type="number" id="an" name="an" th:value="${anCurent}" min="2024" max="2030" required/>
 
-            <button type="submit">Afișează Rezervările</button>
+            <button type="button" id="afiseazaRezervariBtn">Afișează Rezervările</button>
         </form>
 
-        <h3 th:if="${!rezervariLunare.isEmpty()}"
-            th:text="|Rezervări pentru: ${numeLunaCurenta} ${anCurent}|">
-            Rezervări pentru: Decembrie 2025
-        </h3>
+        <div id="tabelaRezervariContainer">
+            <p>Selectați luna și apăsați "Afișează Rezervările".</p>
+        </div>
 
-        <p th:if="${rezervariLunare.isEmpty()}" class="info-message">Nu au fost găsite rezervări pentru perioada selectată.</p>
-
-        <table th:unless="${rezervariLunare.isEmpty()}">
-            <thead>
-            <tr>
-                <th>Camera</th>
-                <th>Client</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="rezervare : ${rezervariLunare}">
-                <td th:text="${rezervare.camera.numarCamera}"></td>
-                <td th:text="|${rezervare.client.nume} ${rezervare.client.prenume}|"></td>
-                <td th:text="${rezervare.dataCheckin}"></td>
-                <td th:text="${rezervare.dataCheckout}"></td>
-                <td th:text="${rezervare.status}"></td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 
     <div class="report-section">
         <h2>3. Lista Clienților Cazați la o Dată</h2>
 
-        <form th:action="@{/camere/clienti_la_data}" method="get" class="search-form">
+        <form id="raportClientiForm" class="search-form" onsubmit="return false;">
             <label for="dataClient">Selectează Data:</label>
-            <input type="date" id="dataClient" name="data" required/>
-            <button type="submit">Afișează Clienții Cazați</button>
+            <input type="date" id="dataClientInput" name="data" required/>
+            <button type="button" id="afiseazaClientiBtn">Afișează Clienții Cazați</button>
         </form>
 
-        <p>Rezultatul va fi afișat după trimiterea formularului.</p>
+        <div id="tabelaClientiContainer">
+            <p>Rezultatul va fi afișat după selectarea datei și apăsarea butonului.</p>
+        </div>
     </div>
 
 </div>

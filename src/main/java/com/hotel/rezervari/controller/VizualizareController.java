@@ -62,5 +62,10 @@ public class VizualizareController {
         return vizualizareService.getRezervariByMonth(an, luna);
     }
 
+    @GetMapping("/clienti_la_data")
+    @ResponseBody
+    public List<com.hotel.rezervari.model.Client> afiseazaClientiLaData(@RequestParam("data") java.time.LocalDate data) {
+        return vizualizareService.getClientiLaData(data);
+    }
 
 }

@@ -33,4 +33,7 @@ public interface RezervareRepository extends JpaRepository<Rezervare, Long> {
             "ORDER BY r.dataCheckin ASC")
     List<Rezervare> findReservationsByDateRange(@Param("dataStart") LocalDate dataStart,
                                                 @Param("dataEnd") LocalDate dataEnd);
+
+    @Query("SELECT r FROM Rezervare r WHERE r.dataCheckin <= :dataSolicitata AND r.dataCheckout > :dataSolicitata AND r.status <> 'CANCELED'")
+    List<Rezervare> findActiveReservationsByDate(@Param("dataSolicitata") java.time.LocalDate dataSolicitata);
 }

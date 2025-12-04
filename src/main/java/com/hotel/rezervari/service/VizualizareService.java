@@ -4,6 +4,7 @@ import com.hotel.rezervari.model.Rezervare;
 import com.hotel.rezervari.model.Client;
 import com.hotel.rezervari.repository.RezervareRepository;
 import com.hotel.rezervari.repository.ClientRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,13 +32,13 @@ public class VizualizareService {
         return rezervareRepository.findReservationsByDateRange(dataStart, dataEnd);
     }
 
-    public List<Client> getClientiLaData(LocalDate data) {
-        List<Rezervare> rezervariActive = rezervareRepository.findActiveReservationsToday();
+    @Transactional
+    public List<Client> getClientiLaData(java.time.LocalDate data) {
+        List<Rezervare> rezervariActive = rezervareRepository.findActiveReservationsByDate(data);
 
-        // Simplitate: extrage doar clienții din rezervările active găsite
         return rezervariActive.stream()
-                .map(Rezervare::getClient)
+                .map(com.hotel.rezervari.model.Rezervare::getClient)
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(java.util.stream.Collectors.toList());
     }
 }
