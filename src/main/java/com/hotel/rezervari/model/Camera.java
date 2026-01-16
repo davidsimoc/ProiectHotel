@@ -1,5 +1,6 @@
 package com.hotel.rezervari.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,8 +41,10 @@ public class Camera {
     private LocalDate dataUrmatoareiRezervari;
 
     @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<CameraInventar> inventar;
 
     @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<NecesarConsumabil> necesarConsumabile;
 }
