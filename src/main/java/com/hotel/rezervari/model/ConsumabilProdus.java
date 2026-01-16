@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "CONSUMABIL_PRODUS")
 @Data
@@ -20,4 +22,7 @@ public class ConsumabilProdus {
 
     @Column(name = "unitate_masura")
     private String unitateMasura;
+
+    @Column(name = "pret_unitar")
+    private BigDecimal pretUnitar;
 }

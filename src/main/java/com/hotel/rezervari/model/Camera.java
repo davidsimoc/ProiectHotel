@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "CAMERA")
@@ -37,4 +38,10 @@ public class Camera {
 
     @Column(name = "data_urmatoarei_rezervari")
     private LocalDate dataUrmatoareiRezervari;
+
+    @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CameraInventar> inventar;
+
+    @OneToMany(mappedBy = "camera", cascade = CascadeType.ALL)
+    private List<NecesarConsumabil> necesarConsumabile;
 }

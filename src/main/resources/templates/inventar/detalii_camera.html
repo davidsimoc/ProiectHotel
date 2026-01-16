@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fișă Inventar și Consumabile</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; }
+        .header-print { border-bottom: 2px solid #333; margin-bottom: 20px; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .no-print { margin-bottom: 20px; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <a th:href="@{/inventar}">← Înapoi la listă</a> |
+    <button onclick="window.print()">🖨 Tipărește Fișa Camerei</button>
+</div>
+
+<div class="header-print">
+    <h1>FIȘĂ TEHNICĂ - CAMERA <span th:text="${camera.numarCamera}"></span></h1>
+    <p>Tip: <span th:text="${camera.tipCamera.numeTip}"></span></p>
+</div>
+
+<h3>Mijloace Fixe (Inventar)</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Denumire Obiect</th>
+        <th>Cantitate</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${camera.inventar != null}" th:each="inv : ${camera.inventar}">
+        <td th:text="${inv.mijlocFix != null ? inv.mijlocFix.numeArticol : 'Articol necunoscut'}"></td>
+        <td th:text="${inv.cantitate}"></td>
+    </tr>
+    <tr th:if="${camera.inventar == null || #lists.isEmpty(camera.inventar)}">
+        <td colspan="2" style="text-align: center; color: #999;">Nu există mijloace fixe înregistrate pentru această cameră.</td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Necesar Zilnic Consumabile</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Produs</th>
+        <th>Cantitate Zilnică</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${camera.necesarConsumabile != null}" th:each="cons : ${camera.necesarConsumabile}">
+        <td th:text="${cons.produs != null ? cons.produs.numeProdus : 'Produs necunoscut'}"></td>
+        <td th:text="${cons.cantitateZilnica}"></td>
+    </tr>
+    <tr th:if="${camera.necesarConsumabile == null || #lists.isEmpty(camera.necesarConsumabile)}">
+        <td colspan="2" style="text-align: center; color: #999;">Nu există necesar de consumabile setat.</td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 50px; font-size: 0.8em; color: #666;">
+    Raport generat la data de: <span th:text="${#temporals.format(#temporals.createNow(), 'dd.MM.yyyy HH:mm')}"></span>
+</div>
+
+</body>
+</html>

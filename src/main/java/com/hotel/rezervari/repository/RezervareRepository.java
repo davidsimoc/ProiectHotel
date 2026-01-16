@@ -18,10 +18,8 @@ public interface RezervareRepository extends JpaRepository<Rezervare, Long> {
                                                 @Param("dataCheckin") LocalDate dataCheckin,
                                                 @Param("dataCheckout") LocalDate dataCheckout);
 
-    @Query(value = "SELECT r.dataCheckin FROM Rezervare r WHERE r.camera.cameraId = :cameraId " +
-            "AND r.dataCheckin > CURRENT_DATE() AND r.status <> 'CANCELED' " +
-            "ORDER BY r.dataCheckin ASC LIMIT 1")
-    Optional<LocalDate> findNextReservationDate(@Param("cameraId") Long cameraId);
+    @Query("SELECT MIN(r.dataCheckin) FROM Rezervare r WHERE r.camera.cameraId = :cameraId AND r.dataCheckin >= :dataCheckout")
+    Optional<LocalDate> findNextReservationDate(@Param("cameraId") Long cameraId, @Param("dataCheckout") LocalDate dataCheckout);
 
     @Query("SELECT r FROM Rezervare r WHERE r.dataCheckin <= CURRENT_DATE() " +
             "AND r.dataCheckout > CURRENT_DATE() AND r.status <> 'CANCELED'")
@@ -36,4 +34,7 @@ public interface RezervareRepository extends JpaRepository<Rezervare, Long> {
 
     @Query("SELECT r FROM Rezervare r WHERE r.dataCheckin <= :dataSolicitata AND r.dataCheckout > :dataSolicitata AND r.status <> 'CANCELED'")
     List<Rezervare> findActiveReservationsByDate(@Param("dataSolicitata") java.time.LocalDate dataSolicitata);
+
+    @Query("SELECT r FROM Rezervare r WHERE YEAR(r.dataCheckin) = :an AND MONTH(r.dataCheckin) = :luna")
+    List<Rezervare> findByMonthAndYearCheckin(@Param("an") int an, @Param("luna") int luna);
 }

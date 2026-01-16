@@ -8,39 +8,14 @@
     <style>
         body { padding-top: 20px; padding-bottom: 50px; background-color: #f4f7f6; }
         h1 { color: #007bff; text-align: center; margin-bottom: 30px; font-size: 2.5em; border-bottom: 3px solid #007bff; padding-bottom: 10px; }
-        .container { max-width: 1100px; margin: 0 auto; }
-        .report-section {
-            background: white;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-        .report-section h2 {
-            color: #333;
-            font-size: 1.6em;
-            margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        select,
-        select option {
-            color: #333 !important;
-            background-color: white !important;
-        }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #f0f0f0; color: #555; }
-        .occupied-row { background-color: #ffe6e6; } /* Roșu pal pentru camere ocupate */
-        .search-form { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; }
-        .search-form input, .search-form select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .search-form button { background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Panou de Vizualizare Cazare</h1>
-
+    <a th:href="@{/}" class="back-link" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-bottom: 30px;\">
+        <span>←</span> Înapoi la Panoul Principal
+    </a>
     <div class="report-section">
         <h2>1. Camere Ocupate Astăzi (Status Curent)</h2>
         <p th:if="${ocupariAzi.isEmpty()}" class="info-message">Toate camerele sunt libere astăzi!</p>
@@ -95,7 +70,7 @@
         <h2>3. Lista Clienților Cazați la o Dată</h2>
 
         <form id="raportClientiForm" class="search-form" onsubmit="return false;">
-            <label for="dataClient">Selectează Data:</label>
+            <label>Selectează Data:</label>
             <input type="date" id="dataClientInput" name="data" required/>
             <button type="button" id="afiseazaClientiBtn">Afișează Clienții Cazați</button>
         </form>

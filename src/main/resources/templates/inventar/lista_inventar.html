@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventar Hotel</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f8f9fa; }
+        .btn-detalii { background-color: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .btn-detalii:hover { background-color: #0056b3; }
+        .back-link { display: inline-block; margin-top: 20px; color: #666; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📋 Gestiune Inventar și Consumabile</h1>
+    <p>Selectați o cameră pentru a vedea dotările și necesarul zilnic de aprovizionare.</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Număr Cameră</th>
+            <th>Tip Cameră</th>
+            <th>Status</th>
+            <th>Acțiuni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${camere}">
+            <td th:text="${c.numarCamera}" style="font-weight: bold;"></td>
+            <td th:text="${c.tipCamera.numeTip}"></td>
+            <td>
+                <span th:text="${c.esteOcupata ? 'Ocupată' : 'Liberă'}"
+                      th:style="${c.esteOcupata ? 'color: #dc3545' : 'color: #28a745'}"></span>
+            </td>
+            <td>
+                <a th:href="@{/inventar/detalii/{id}(id=${c.cameraId})}" class="btn-detalii">Vezi Fișă / Tipărește</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/}" class="back-link">← Înapoi la Dashboard</a>
+</div>
+</body>
+</html>

@@ -7,9 +7,12 @@
 </head>
 <body>
 
-    <h1>🛎️ Adaugă o nouă Rezervare</h1>
+    <h1>Adaugă o nouă Rezervare</h1>
 
     <form th:action="@{/rezervari/salveaza}" method="post">
+        <a th:href="@{/}" class="back-link" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; \">
+            <span>←</span> Înapoi la Panoul Principal
+        </a>
         <h2>Date Client (Din Buletin)</h2>
         <div class="form-group">
             <label for="nume">Nume:</label>

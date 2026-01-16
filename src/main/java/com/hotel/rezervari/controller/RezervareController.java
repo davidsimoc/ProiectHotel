@@ -36,7 +36,7 @@ public class RezervareController {
         List<Camera> camereDisponibile = cameraRepository.findAll();
         model.addAttribute("camere", camereDisponibile);
 
-        return "rezervari/adaugaRezervare";
+        return "rezervari/adauga_rezervare";
     }
 
     @PostMapping("/salveaza")
@@ -59,12 +59,12 @@ public class RezervareController {
     }
     @GetMapping("/succes")
     public String rezervareSucces() {
-        return "rezervari/rezervareSucces";
+        return "rezervari/rezervare_succes";
     }
 
     @GetMapping("/eroare")
     public String rezervareEroare(@RequestParam(value = "motiv", required = false) String motiv, Model model) {
         model.addAttribute("motiv", motiv != null ? motiv : "Eroare necunoscută la procesarea rezervării.");
-        return "rezervari/rezervareEroare";
+        return "rezervari/rezervare_eroare";
     }
 }

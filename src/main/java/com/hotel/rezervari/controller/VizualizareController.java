@@ -51,7 +51,7 @@ public class VizualizareController {
 
         model.addAttribute("rezervariLunare", vizualizareService.getRezervariByMonth(today.getYear(), today.getMonthValue()));
 
-        return "vizualizare/statusCazare";
+        return "vizualizare/status_cazare";
     }
 
     @GetMapping("/raport_lunar")

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adăugare Cheltuială</title>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Înregistrare Cheltuială Administrativă</h1>
+
+    <div class="form-container">
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Introduceți detaliile pentru facturi de utilități, salarii sau reparații.
+        </p>
+
+        <form th:action="@{/finante/cheltuieli/salveaza}" th:object="${cheltuiala}" method="post">
+
+            <div class="form-group">
+                <label>Tip Cheltuială:</label>
+                <select th:field="*{tipCheltuiala}" required>
+                    <option value="SALARII">Salarii Personal</option>
+                    <option value="UTILITATI">Utilități (Curent, Apă, Gaz)</option>
+                    <option value="MENTENANTA">Mentenanță și Reparații</option>
+                    <option value="APROVIZIONARE_EXTRA">Aprovizionare Extra</option>
+                    <option value="ALTELE">Alte Cheltuieli</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Suma (RON):</label>
+                <input type="number" step="0.01" th:field="*{suma}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Data Plății:</label>
+                <input type="date" th:field="*{dataCheltuiala}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Descriere / Detalii:</label>
+                <input type="text" th:field="*{descriere}" placeholder="ex: Factura Enel Decembrie">
+            </div>
+
+            <div style="overflow: hidden; margin-top: 20px;">
+                <button type="submit">Salvează Cheltuiala</button>
+                <a th:href="@{/finante/rapoarte}"
+                   style="display: inline-block; margin-top: 30px; color: #666; text-decoration: none; font-weight: 600;">
+                    ← Înapoi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

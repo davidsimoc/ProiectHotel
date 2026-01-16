@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ro" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapoarte Venituri</title>
+    <link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Raport Financiar Hotel</h1>
+    <div class="report-section">
+        <form th:action="@{/finante/rapoarte}" method="get" class="search-form">
+            <label for="luna">Luna:</label>
+            <select id="luna" name="luna">
+                <option th:each="entry: ${numeLuniMap}"
+                        th:value="${entry.key}"
+                        th:text="${entry.value}"
+                        th:selected="${entry.key == lunaSelectata}">
+                </option>
+            </select>
+            <label for="an">An:</label>
+            <input type="number" id="an" name="an" th:value="${anSelectat}" min="2024" max="2030" required>
+
+            <button type="submit">Filtreaza</button>
+        </form>
+
+        <div class="no-print">
+            <a th:href="@{/finante/cheltuieli/nou}"
+               style="background-color: #d9534f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 8px; transition: background 0.3s;">
+                <span>+</span> Adaugă Salariu / Factură
+            </a>
+        </div>
+    </div>
+    <p>Perioada: Luna <span th:text="${lunaSelectata}"></span> / <span th:text="${anSelectat}"></span></p>
+
+    <h2>Detalii Incasari Rezervari</h2>
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Data Check-in</th>
+            <th>Client</th>
+            <th>Cameră</th>
+            <th>Suma Achitată</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${incasari}">
+            <td th:text="${r.dataCheckin}"></td>
+            <td th:text="|${r.client.nume} ${r.client.prenume}|"></td>
+            <td th:text="${r.camera.numarCamera}"></td>
+            <td th:text="${r.totalPlataFinala} + ' RON'"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr style="font-weight: bold; background: #e9ecef;">
+            <td colspan="3" style="text-align: right;">TOTAL ÎNCASĂRI LUNARE:</td>
+            <td th:text="${totalIncasari} + ' RON'"></td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <hr style="margin: 40px 0; border: 1px dashed #ccc;">
+
+    <h2 style="color: #dc3545;">Detalii Consumabile</h2>
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Produs</th>
+            <th>Cantitate Estimata</th>
+            <th>Unitate</th>
+            <th>Cost Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detaliu : ${detaliiConsum}">
+            <td th:text="${detaliu.numeProdus}"></td>
+            <td th:text="${detaliu.cantitateTotala}"></td>
+            <td th:text="${detaliu.unitate}"></td>
+            <td th:text="${#numbers.formatDecimal(detaliu.costTotal, 1, 2)} + ' RON'"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr style="font-weight: bold; background: #fff3cd;">
+            <td colspan="3" style="text-align: right;">TOTAL COST CONSUMABILE:</td>
+            <td th:text="${#numbers.formatDecimal(totalConsum, 1, 2)} + ' RON'"></td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div class="report-section" style="margin-top: 30px; background: #e7f3ff; border-left: 5px solid #007bff;">
+        <h2 style="margin-top: 0;">📊 Rezumat Profit Net</h2>
+        <div style="font-size: 1.2em; line-height: 1.8;">
+            <div>Venituri Totale: <span th:text="${#numbers.formatDecimal(totalIncasari, 1, 2)} + ' RON'" style="color: #28a745; font-weight: bold;"></span></div>
+            <div>Cheltuieli Consumabile (Estimate): <span th:text="'- ' + ${#numbers.formatDecimal(totalConsum, 1, 2)} + ' RON'" style="color: #dc3545;"></span></div>
+
+            <div>Alte Cheltuieli (Salarii/Utilități): <span th:text="'- ' + ${#numbers.formatDecimal(totalCheltuieliManuale, 1, 2)} + ' RON'" style="color: #dc3545;"></span></div>
+
+            <div style="border-top: 2px solid #333; margin-top: 10px; padding-top: 10px; font-size: 1.4em;">
+                <strong>PROFIT NET FINAL: </strong>
+                <span th:text="${#numbers.formatDecimal(profitNetFinal, 1, 2)} + ' RON'"
+                      th:style="${profitNetFinal >= 0 ? 'color: #28a745; font-weight: bold;' : 'color: #dc3545; font-weight: bold;'}">
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-print" style="margin-top: 20px; display: flex; gap: 10px;">
+        <button onclick="window.print()" class="btn-rapoarte" style="background-color: #17a2b8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            📄 Printează sau Salvează PDF
+        </button>
+    </div>
+
+    <a th:href="@{/}" class="back-link" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-top: 10px">
+        <span>←</span> Înapoi la Panoul Principal
+    </a>
+</div>
+</body>
+</html>
